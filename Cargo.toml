@@ -14,6 +14,18 @@ edition = "2018"
 [package.metadata.docs.rs]
 all-features = true
 
+[profile.release]
+opt-level = 3
+debug = false
+split-debuginfo = '...'  # Platform-specific.
+debug-assertions = false
+overflow-checks = false
+lto = true
+panic = 'unwind'
+incremental = false
+codegen-units = 1
+rpath = false
+
 [dev-dependencies]
 rand = "0.8"
 rand_distr = "0.4"
@@ -21,6 +33,7 @@ criterion = "0.3.4"
 aligned = "0.4"
 serde = "1.0"
 serde_json = "1.0.64"
+rayon = "1.5.3"
 
 [dependencies]
 num-traits = "0.2"
@@ -50,4 +63,8 @@ harness = false
 
 [[bench]]
 name = "best_within_3d_unit_sphere"
+harness = false
+
+[[bench]]
+name = "typical_halo_catalog"
 harness = false

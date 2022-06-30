@@ -1128,39 +1128,39 @@ where
     } else {
         
         // Initialize min to max possible distance
-        let mut min: A = periodic
-            .unwrap()
-            .iter()
-            .fold(
-                A::zero(),
-                |acc, &x| acc + x*x,
-            );
+        let mut min = A::zero();
 
-        // Calculate distance for every image
-        for image_idx in 0..3_i32.pow(K as u32) {
+        // // Calculate distance for every image
+        // for image_idx in 0..3_i32.pow(K as u32) {
 
-            // Initialize current_image template
-            let mut current_image: [i32; K] = [0; K];
+        //     // Initialize current_image template
+        //     let mut current_image: [i32; K] = [0; K];
 
-            // Calculate current image
-            for idx in 0..K {
-                current_image[idx] = (( image_idx / 3_i32.pow(idx as u32)) % 3) - 1;
-            }
+        //     // Calculate current image
+        //     for idx in 0..K {
+        //         current_image[idx] = (( image_idx / 3_i32.pow(idx as u32)) % 3) - 1;
+        //     }
 
-            // Construct current image position
-            let mut new_a: [A; K] = a.clone();
-            for idx in 0..K {
-                new_a[idx] = new_a[idx] + A::from(current_image[idx]).unwrap()*periodic.unwrap()[idx];
-            }
+        //     // Construct current image position
+        //     let mut new_a: [A; K] = a.clone();
+        //     for idx in 0..K {
+        //         new_a[idx] = new_a[idx] + A::from(current_image[idx]).unwrap()*periodic.unwrap()[idx];
+        //     }
 
-            // Calculate distance for this image
-            let image_distance = distance(&new_a, b);
+        //     // Calculate distance for this image
+        //     let image_distance = distance(&new_a, b);
 
-            // Compare with current min
-            min = min.min(image_distance);
+        //     // Compare with current min
+        //     min = min.min(image_distance);
+        // }
+        let periodic = periodic.unwrap();
+        for i in 0..K {
+            min = min + ((a[i]-b[i]).abs()-periodic[i]).powi(2)
+                .min((a[i]-b[i]).powi(2));
         }
 
         min
+
     }
 }
 
